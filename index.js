@@ -132,11 +132,12 @@ server.tool(
   {
     id: z.coerce.number().describe("App ID"),
     country: z.string().default("us").describe("Country code for reviews"),
+    limit: z.coerce.number().min(1).max(50).default(10).describe("Number of reviews to return"),
   },
-  async ({ id, country }) => {
-    const data = await fetchAPI(`/apps/${id}/reviews`, { country });
+  async ({ id, country, limit }) => {
+    const data = await fetchAPI(`/apps/${id}/reviews`, { country, limit });
     if (!data.items.length) return { content: [{ type: "text", text: "No reviews found." }] };
-    const lines = data.items.slice(0, 20).map(
+    const lines = data.items.map(
       (r) => `${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)} "${r.title}" by ${r.author}${r.version ? ` (v${r.version})` : ""}\n  ${r.content.slice(0, 200)}${r.content.length > 200 ? "..." : ""}`
     );
     return { content: [{ type: "text", text: `Reviews for ${country.toUpperCase()} (${data.count} total):\n\n${lines.join("\n\n")}` }] };
