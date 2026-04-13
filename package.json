@@ -1,6 +1,6 @@
 {
   "name": "@appranks.app/mcp-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP server for live App Store rankings data — browse charts, search apps, view rankings across 55 countries",
   "main": "index.js",
   "bin": {
@@ -10,7 +10,18 @@
   "scripts": {
     "start": "node index.js"
   },
-  "keywords": ["mcp", "app-store", "rankings", "charts", "ios", "apple", "iphone", "ipad", "mac", "appranks"],
+  "keywords": [
+    "mcp",
+    "app-store",
+    "rankings",
+    "charts",
+    "ios",
+    "apple",
+    "iphone",
+    "ipad",
+    "mac",
+    "appranks"
+  ],
   "author": "AppRanks <hello@appranks.app>",
   "license": "MIT",
   "repository": {
