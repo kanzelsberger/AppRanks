@@ -29,8 +29,8 @@ server.tool(
     country: z.string().default("us").describe("Country code (e.g. us, gb, de, jp, fr)"),
     platform: z.enum(["iphone", "ipad", "mac", "tv"]).default("iphone").describe("Platform"),
     chart: z.enum(["topFree", "topPaid", "topGrossing"]).default("topFree").describe("Chart type"),
-    category: z.number().optional().describe("Category ID (36=All, 6014=Games, 6016=Entertainment, etc.)"),
-    limit: z.number().min(1).max(200).default(20).describe("Number of results"),
+    category: z.coerce.number().optional().describe("Category ID (36=All, 6014=Games, 6016=Entertainment, etc.)"),
+    limit: z.coerce.number().min(1).max(200).default(20).describe("Number of results"),
   },
   async ({ country, platform, chart, category, limit }) => {
     const data = await fetchAPI("/charts", { country, platform, chart, category, limit });
@@ -48,7 +48,7 @@ server.tool(
   "Search for apps by name or developer in the App Store rankings database",
   {
     query: z.string().describe("Search query (app name or developer name)"),
-    limit: z.number().min(1).max(50).default(10).describe("Number of results"),
+    limit: z.coerce.number().min(1).max(50).default(10).describe("Number of results"),
   },
   async ({ query, limit }) => {
     const data = await fetchAPI("/apps/search", { q: query, limit });
@@ -65,7 +65,7 @@ server.tool(
   "get_app",
   "Get detailed information about an app including its current rankings across all countries and platforms",
   {
-    id: z.number().describe("App ID (numeric Apple ID)"),
+    id: z.coerce.number().describe("App ID (numeric Apple ID)"),
   },
   async ({ id }) => {
     const app = await fetchAPI(`/apps/${id}`);
@@ -108,12 +108,12 @@ server.tool(
   "get_rank_history",
   "Get ranking history for an app over time in a specific country, platform, chart, and category",
   {
-    id: z.number().describe("App ID"),
+    id: z.coerce.number().describe("App ID"),
     country: z.string().default("us").describe("Country code"),
     platform: z.enum(["iphone", "ipad", "mac", "tv"]).default("iphone").describe("Platform"),
     chart: z.enum(["topFree", "topPaid", "topGrossing"]).default("topFree").describe("Chart type"),
-    category: z.number().optional().describe("Category ID (default: 36 = All)"),
-    days: z.number().min(1).max(365).default(30).describe("Number of days of history"),
+    category: z.coerce.number().optional().describe("Category ID (default: 36 = All)"),
+    days: z.coerce.number().min(1).max(365).default(30).describe("Number of days of history"),
   },
   async ({ id, country, platform, chart, category, days }) => {
     const data = await fetchAPI(`/apps/${id}/history`, { country, platform, chart, category, days });
@@ -130,7 +130,7 @@ server.tool(
   "get_reviews",
   "Get recent App Store reviews for an app in a specific country",
   {
-    id: z.number().describe("App ID"),
+    id: z.coerce.number().describe("App ID"),
     country: z.string().default("us").describe("Country code for reviews"),
   },
   async ({ id, country }) => {
