@@ -1,5 +1,5 @@
 {
-  "name": "@appranks/mcp-server",
+  "name": "@appranks.app/mcp-server",
   "version": "1.0.0",
   "description": "MCP server for live App Store rankings data — browse charts, search apps, view rankings across 55 countries",
   "main": "index.js",
@@ -15,7 +15,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/appranks/mcp-server-appranks"
+    "url": "https://github.com/kanzelsberger/AppRanks"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0"

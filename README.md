@@ -35,7 +35,7 @@ Add to your `claude_desktop_config.json`:
   "mcpServers": {
     "appranks": {
       "command": "npx",
-      "args": ["-y", "@appranks/mcp-server"]
+      "args": ["-y", "@appranks.app/mcp-server"]
     }
   }
 }
@@ -44,13 +44,13 @@ Add to your `claude_desktop_config.json`:
 ### Claude Code
 
 ```bash
-claude mcp add appranks -- npx -y @appranks/mcp-server
+claude mcp add appranks -- npx -y @appranks.app/mcp-server
 ```
 
 ### Manual
 
 ```bash
-npx @appranks/mcp-server
+npx @appranks.app/mcp-server
 ```
 
 ## Examples
