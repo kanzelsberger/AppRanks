@@ -18,7 +18,7 @@ async function fetchAPI(path, params = {}) {
 
 const server = new McpServer({
   name: "appranks",
-  version: "1.0.0",
+  version: "1.0.3",
 });
 
 // Browse App Store charts
@@ -34,9 +34,12 @@ server.tool(
   },
   async ({ country, platform, chart, category, limit }) => {
     const data = await fetchAPI("/charts", { country, platform, chart, category, limit });
-    const lines = data.items.map(
-      (e, i) => `${e.position}. ${e.name} — ${e.developerName || "Unknown"} (${e.price ? `$${e.price.toFixed(2)}` : "Free"})${e.averageRating ? ` ${e.averageRating.toFixed(1)}★` : ""}`
-    );
+    const lines = data.items.map((e) => {
+      // Prefer the App Store's localized price string ("₪9.90", "£0.99", "Free")
+      // over a USD-assumed format. Falls back to the numeric price when missing.
+      const priceLabel = e.formattedPrice || (e.price === 0 ? "Free" : e.price != null ? `$${e.price.toFixed(2)}` : "");
+      return `${e.position}. ${e.name} — ${e.developerName || "Unknown"} (${priceLabel})${e.averageRating ? ` ${e.averageRating.toFixed(1)}★` : ""}`;
+    });
     const header = `${chart} ${platform} apps in ${country.toUpperCase()}${data.capturedAt ? ` (updated ${new Date(data.capturedAt).toISOString()})` : ""}`;
     return { content: [{ type: "text", text: `${header}\n\n${lines.join("\n")}` }] };
   }
@@ -80,6 +83,10 @@ server.tool(
     if (app.fileSizeBytes) text += `Size: ${(app.fileSizeBytes / 1024 / 1024).toFixed(1)} MB\n`;
     if (app.contentRating) text += `Content Rating: ${app.contentRating}\n`;
     text += `Bundle ID: ${app.bundleId || "Unknown"}\n`;
+    if (app.platforms?.length) {
+      const labels = { iphone: "iPhone", ipad: "iPad", mac: "Mac", tv: "Apple TV" };
+      text += `Available on: ${app.platforms.map((p) => labels[p] || p).join(", ")}\n`;
+    }
     if (app.sellerUrl) text += `Website: ${app.sellerUrl}\n`;
     text += `App Store: https://apps.apple.com/app/id${id}\n`;
 
